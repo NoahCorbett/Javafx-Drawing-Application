@@ -1,23 +1,23 @@
 package com.example.assignment3;
 
-import javafx.css.converter.PaintConverter;
+
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
+
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 
 public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, DrawingModelSubscriber{
 
-    private InteractionModel iModel;
     ToggleGroup toggleGroup;
     ArrayList<ToggleButton> colorButtons;
+
+    /**
+     * Creates the widget for the color toolbar
+     */
     public ColorToolbar(){
         VBox root = new VBox();
         ToggleButton aqua = new ToggleButton("Aqua");
@@ -92,18 +92,24 @@ public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, 
     }
 
 
-    public void setIModel(InteractionModel iModel) {
-        this.iModel = iModel;
+    /**
+     * Sets the interaction model that the ColorToolbar listens to
+     */
+    public void setIModel() {
     }
 
+    /**
+     * Sets the drawing controller for the ColorToolbar so whenever a button is clicked it notifies the controller
+     * @param controller a drawing controller
+     */
     public void setController(DrawingController controller){
-        colorButtons.forEach(cb -> {
-            cb.setOnAction(e -> controller.handleColorSelect(Color.valueOf(cb.getBackground().getFills().get(0).getFill().toString())));
-
-        });
+        colorButtons.forEach(cb -> cb.setOnAction(e -> controller.handleColorSelect(Color.valueOf(cb.getBackground().getFills().get(0).getFill().toString()))));
 
     }
 
+    /**
+     * When the interaction model changes make the selected color bigger on the toolbar compared to other colors
+     */
     @Override
     public void iModelChanged() {
 
@@ -116,6 +122,9 @@ public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, 
         });
     }
 
+    /**
+     * Does nothing when notified that the model has changed
+     */
     @Override
     public void modelChanged() {
 

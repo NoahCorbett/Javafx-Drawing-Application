@@ -14,7 +14,7 @@ public class InteractionModel {
     boolean viewPortSelected;
 
     public void moveShape(double normX, double normY, double dX, double dY) {
-        selectedShape.translate(normX, normY, dX, dY);
+        selectedShape.translate(dX, dY);
         notifySubscribers();
     }
 
@@ -40,8 +40,8 @@ public class InteractionModel {
         subs.forEach(s -> s.iModelChanged());
     }
 
-    public void resizeShape(double normX, double normY, double dX, double dY) {
-        selectedShape.resize(normX, normY, dX, dY);
+    public void resizeShape(double dX, double dY) {
+        selectedShape.resize(dX, dY);
         notifySubscribers();
     }
 

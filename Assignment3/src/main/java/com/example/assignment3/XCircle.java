@@ -5,6 +5,14 @@ import javafx.scene.paint.Color;
 public class XCircle extends XShape{
     double cx,cy, sizeX, sizeY;
 
+    /**
+     * Constructor method for a circle
+     * @param left The left position of the circle
+     * @param top The top of the circle
+     * @param size The size of the circle
+     * @param color The colour of the circle
+     * @param z The z axis position of the circle
+     */
     XCircle(double left, double top, double size, Color color, int z){
         super(left, top, size, color, z);
         cx = left + size/2;
@@ -15,8 +23,13 @@ public class XCircle extends XShape{
 
     }
 
+    /**
+     * Resize the circle using the change in position in the x and y position
+     * @param dx The change in the x-axis
+     * @param dy The change in the y-axis
+     */
     @Override
-    public void resize(double normX, double normY, double dx, double dy) {
+    public void resize(double dx, double dy) {
         sizeX += dx;
         sizeY += dy;
         if (sizeX <0 && sizeY <0){
@@ -54,13 +67,24 @@ public class XCircle extends XShape{
 
     }
 
+    /**
+     * Checks if the coordinate is inside the circle
+     * @param x The x position of the coordinate
+     * @param y The y position of the coordinate
+     * @return True if the coordinate is inside the circle false otherwise
+     */
     @Override
     public boolean contains(double x, double y) {
         return Math.hypot(x-cx,y-cy) <= size/2;
     }
 
+    /**
+     * Moves the circle by dX and dY amount
+     * @param dX How far the shape should move in the x-axis
+     * @param dY How far the shape should move in the y-axis
+     */
     @Override
-    public void translate(double normX, double normY, double dX, double dY) {
+    public void translate(double dX, double dY) {
         left += dX;
         top += dY;
         initLeft +=dX;

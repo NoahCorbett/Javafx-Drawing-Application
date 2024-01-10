@@ -1,10 +1,7 @@
 package com.example.assignment3;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class MainUI extends StackPane  {
@@ -55,7 +52,7 @@ public class MainUI extends StackPane  {
 
     public void setIModel(InteractionModel iModel){
         view.setIModel(iModel);
-        color.setIModel(iModel);
+        color.setIModel();
         shape.setIModel(iModel);
         miniView.setIModel(iModel);
     }

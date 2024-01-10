@@ -1,6 +1,5 @@
 package com.example.assignment3;
 
-import javafx.event.Event;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -101,7 +100,7 @@ public class DrawingController {
             }
             case RESIZE -> {
 
-                iModel.resizeShape(normX, normY, dX, dY);
+                iModel.resizeShape(dX, dY);
             }
             case SELECTED -> {
                 iModel.moveShape(normX, normY, dX, dY);

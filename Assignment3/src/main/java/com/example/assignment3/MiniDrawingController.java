@@ -1,6 +1,5 @@
 package com.example.assignment3;
 
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class MiniDrawingController extends DrawingController{
@@ -55,7 +54,7 @@ public class MiniDrawingController extends DrawingController{
             }
             case RESIZE -> {
 
-                iModel.resizeShape(normX, normY, dX, dY);
+                iModel.resizeShape(dX, dY);
             }
             case SELECTED -> {
                 if (iModel.viewPortSelected) {
