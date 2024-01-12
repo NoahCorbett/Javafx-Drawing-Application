@@ -16,7 +16,7 @@ public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, 
     ArrayList<ToggleButton> colorButtons;
 
     /**
-     * Creates the widget for the color toolbar
+     * Constructor class for the color toolbar widget
      */
     public ColorToolbar(){
         VBox root = new VBox();
@@ -91,16 +91,9 @@ public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, 
         this.getChildren().addAll(root);
     }
 
-
-    /**
-     * Sets the interaction model that the ColorToolbar listens to
-     */
-    public void setIModel() {
-    }
-
     /**
      * Sets the drawing controller for the ColorToolbar so whenever a button is clicked it notifies the controller
-     * @param controller a drawing controller
+     * @param controller The drawing controller that handles the event that a color is selected
      */
     public void setController(DrawingController controller){
         colorButtons.forEach(cb -> cb.setOnAction(e -> controller.handleColorSelect(Color.valueOf(cb.getBackground().getFills().get(0).getFill().toString()))));
@@ -112,7 +105,6 @@ public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, 
      */
     @Override
     public void iModelChanged() {
-
         colorButtons.forEach(cb -> {
             if (cb.isSelected()){
                 cb.setBackground(new Background(new BackgroundFill(cb.getBackground().getFills().get(0).getFill(), CornerRadii.EMPTY, new Insets(1,2,1,2))));

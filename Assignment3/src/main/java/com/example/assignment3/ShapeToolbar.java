@@ -27,7 +27,9 @@ public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, 
 
     InteractionModel IModel;
 
-
+    /**
+     * Constructor class for the shape toolbar widget
+     */
     public ShapeToolbar(){
         VBox root = new VBox();
         root.setMaxSize(100, Double.POSITIVE_INFINITY);
@@ -110,10 +112,18 @@ public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, 
         this.getChildren().add(root);
     }
 
+    /**
+     * Sets the iModel for the ShapeToolbar
+     * @param IModel The IModel in the MVC architecture
+     */
     public void setIModel(InteractionModel IModel) {
         this.IModel = IModel;
     }
 
+    /**
+     * When a shape button is clicked it notifies the controller so that that shape is selected
+     * @param controller The drawing controller that handles the event that a shape is selected
+     */
     public void setController(DrawingController controller){
         rectangleButton.setOnAction(e -> controller.handleToolSelect(InteractionModel.Tool.RECTANGLE));
         squareButton.setOnAction(e -> controller.handleToolSelect(InteractionModel.Tool.SQUARE));
@@ -122,6 +132,10 @@ public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, 
         lineButton.setOnAction(e -> controller.handleToolSelect(InteractionModel.Tool.LINE));
     }
 
+    /**
+     * When the iModel is updated then the currently selected shape is changed to that color on the toolbar and
+     * everything else is turned to black
+     */
     @Override
     public void iModelChanged() {
         if(rectangleButton.isSelected()){
@@ -152,6 +166,9 @@ public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, 
         }
     }
 
+    /**
+     * Nothing happens when the model is changed
+     */
     @Override
     public void modelChanged() {
 
