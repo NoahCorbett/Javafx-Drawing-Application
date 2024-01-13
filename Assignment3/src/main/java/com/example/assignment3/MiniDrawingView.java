@@ -5,11 +5,21 @@ import javafx.scene.paint.Color;
 import java.util.Comparator;
 
 public class MiniDrawingView extends DrawingView{
+    /**
+     * The constructor method that creates
+     * @param height The height of the mini view
+     * @param width The width of the mini view
+     * @param documentHeight The height of the entire canvas
+     * @param documentWidth The width of the entire canvas
+     */
     public MiniDrawingView(double height, double width, double documentHeight, double documentWidth) {
         super(height, width, documentHeight, documentWidth);
         this.setStyle("-fx-background-color: grey");
     }
 
+    /**
+     * Draw all the shapes and the yellow viewport
+     */
     @Override
     public void draw(){
         gc.clearRect(0,0, myCanvas.getWidth(), myCanvas.getHeight());
@@ -34,10 +44,19 @@ public class MiniDrawingView extends DrawingView{
         gc.strokeRect(iModel.viewLeft/ iModel.documentWidth*width, iModel.viewTop/ iModel.documentLength*height, iModel.viewWidth/ iModel.documentWidth*width, iModel.viewHeight/ iModel.documentLength*height);
 
     }
+
+    /**
+     * When the iModel changes redraw everything
+     */
     @Override
     public void iModelChanged(){
         draw();
     }
+
+    /**
+     * Sets the controller and when events occur it notifies the controller
+     * @param controller The controller for the mini view
+     */
     @Override
     public void setController(DrawingController controller) {
         myCanvas.setOnMousePressed(e -> controller.handlePress(e.getX()/width, e.getY()/height, e));
@@ -45,7 +64,9 @@ public class MiniDrawingView extends DrawingView{
         myCanvas.setOnMouseReleased(e -> controller.handleRelease(e.getX()/width, e.getY()/height, e ));
     }
 
-
+    /**
+     * Makes the bounding box in the mini view for the selected shape
+     */
     private void makeBoundingBox(){
         switch (iModel.getSelectedShape()){
             case XSquare square -> {

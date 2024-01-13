@@ -60,7 +60,7 @@ public class MiniDrawingController extends DrawingController{
                 if (iModel.viewPortSelected) {
                     iModel.setViewLocation(iModel.viewLeft + dX * iModel.documentWidth, iModel.viewTop + dY * iModel.documentLength);
                 } else {
-                    iModel.moveShape(normX, normY, dX, dY);
+                    iModel.moveShape(dX, dY);
                 }
             }
         }

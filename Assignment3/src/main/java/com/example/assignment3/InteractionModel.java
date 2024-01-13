@@ -13,16 +13,14 @@ public class InteractionModel {
     double documentWidth, documentLength;
     boolean viewPortSelected;
 
-    public void moveShape(double normX, double normY, double dX, double dY) {
-        selectedShape.translate(dX, dY);
-        notifySubscribers();
-    }
-
     public enum Tool{
         RECTANGLE, SQUARE, OVAL, CIRCLE, LINE
     }
     Tool currentTool;
 
+    /**
+     * The constructor method for the interaction model
+     */
     InteractionModel(){
         subs = new ArrayList<>();
         currentTool = Tool.SQUARE;
@@ -33,31 +31,65 @@ public class InteractionModel {
         notifySubscribers();
     }
 
-    public void addSub(DrawingIModelSubscriber sub){
-        subs.add(sub);
-    }
-    public void notifySubscribers(){
-        subs.forEach(s -> s.iModelChanged());
+    /**
+     * Move the selected shape
+     * @param dX The amount to move the shape in the x direction
+     * @param dY The amount to move the shape in the y direction
+     */
+    public void moveShape(double dX, double dY) {
+        selectedShape.translate(dX, dY);
+        notifySubscribers();
     }
 
+    /**
+     * Resize the shape
+     * @param dX The amount the shape changes in the x direction
+     * @param dY The amount the shape changes in the y direction
+     */
     public void resizeShape(double dX, double dY) {
         selectedShape.resize(dX, dY);
         notifySubscribers();
     }
 
+    /**
+     * Returns the selected color in the interaction model
+     * @return the selected color
+     */
     public Color getSelectedColour() {
         return selectedColour;
     }
 
+    /**
+     * Sets the color in the interaction model
+     * @param selectedColour The color to be set as the selected color
+     */
     public void setSelectedColour(Color selectedColour) {
         this.selectedColour = selectedColour;
         notifySubscribers();
     }
 
+    /**
+     * Get the type of the selected shape
+     * @return The type of the selected shape
+     */
+    public Tool getCurrentTool() {
+        return currentTool;
+    }
+
+    /**
+     * Changes the selected tool to the current shape
+     * @param currentTool The tool that matches with the newly selected shape
+     */
     public void setCurrentTool(Tool currentTool) {
         this.currentTool = currentTool;
         notifySubscribers();
     }
+
+    /**
+     * Set where the drawing view is located on the canvas
+     * @param viewLeft The new left side of the view
+     * @param viewTop The new top side of the view
+     */
     public void setViewLocation(double viewLeft, double viewTop){
         this.viewLeft = viewLeft;
         this.viewTop = viewTop;
@@ -75,6 +107,12 @@ public class InteractionModel {
         }
         notifySubscribers();
     }
+
+    /**
+     * Set the size for the view size
+     * @param viewWidth The new size of the view in the x-axis
+     * @param viewHeight The new size of the view in the y-axis
+     */
     public void setViewSize(double viewWidth, double viewHeight) {
         this.viewHeight = viewHeight;
         this.viewWidth = viewWidth;
@@ -86,28 +124,47 @@ public class InteractionModel {
         }
         notifySubscribers();
     }
+    /**
+     * Sets the size for the entire document
+     * @param documentWidth The width of the entire document
+     * @param documentLength The height of the entire document
+     */
     public void setDocumentSize(double documentWidth, double documentLength){
         this.documentWidth = documentWidth;
         this.documentLength = documentLength;
     }
 
-    public Tool getCurrentTool() {
-        return currentTool;
+    /**
+     * Returns the selected shape
+     * @return the selected shape
+     */
+    public XShape getSelectedShape() {
+        return selectedShape;
     }
 
+    /**
+     * Sets the selected shape
+     * @param selectedShape the new shape that is selected
+     */
     public void setSelectedShape(XShape selectedShape) {
         this.selectedShape = selectedShape;
         notifySubscribers();
     }
 
-    public XShape getSelectedShape() {
-        return selectedShape;
-    }
+    /**
+     * Unselect the current shape
+     */
     public void unSelect(){
         selectedShape = null;
         notifySubscribers();
     }
 
+    /**
+     * Takes an x, y coordinates and sees if it is inside the resize tab for the currently selected shape
+     * @param normX The x coordinate for the click
+     * @param normY The y coordinate for the click
+     * @return True if the click is inside the resize tab, false otherwise
+     */
     public boolean withinResizeTab(double normX, double normY){
         switch (getSelectedShape()){
             case XSquare square -> {
@@ -140,7 +197,21 @@ public class InteractionModel {
             }
         }
 
+    }
 
+    /**
+     * Add subscriber that needs updating whenever the interaction model changes
+     * @param sub A subscriber that needs updating whenever the interaction model changes
+     */
+    public void addSub(DrawingIModelSubscriber sub){
+        subs.add(sub);
+    }
+
+    /**
+     * Notifies subscriber when the interaction model has changed
+     */
+    public void notifySubscribers(){
+        subs.forEach(s -> s.iModelChanged());
     }
 
 }

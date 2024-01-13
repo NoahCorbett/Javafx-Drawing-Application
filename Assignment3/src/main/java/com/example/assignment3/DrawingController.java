@@ -9,24 +9,26 @@ import javafx.scene.paint.Color;
 public class DrawingController {
     DrawingModel model;
     InteractionModel iModel;
-
     double prevX, prevY;
-
-    public void windowSizeChanged(double width, double height) {
-        iModel.setViewSize(width, height);
-    }
-
-
+    protected State curState;
     protected enum State{
         READY, RESIZE, SELECTED, DRAG
     }
-    protected State curState;
 
+    /**
+     * The constructor method for the drawing controller
+     */
     public DrawingController(){
         curState = State.READY;
 
     }
 
+    /**
+     * Handles the mouse press event
+     * @param normX Where the mouse was clicked in the x-axis
+     * @param normY Where the mouse was clicked in the y-axis
+     * @param e The mouse event
+     */
     public void handlePress(double normX, double normY, MouseEvent e) {
         normX += iModel.viewLeft/ iModel.documentWidth;
         normY += iModel.viewTop/ iModel.documentLength;
@@ -67,6 +69,12 @@ public class DrawingController {
         }
     }
 
+    /**
+     * Handles the mouse drag event
+     * @param normX Where the mouse was dragged to in the x-axis
+     * @param normY Where the mouse was dragged to in the y-axis
+     * @param e The mouse event
+     */
     public void handleDrag(double normX, double normY, MouseEvent e){
         normX += iModel.viewLeft/ iModel.documentWidth;
         normY += iModel.viewTop/ iModel.documentLength;
@@ -103,7 +111,7 @@ public class DrawingController {
                 iModel.resizeShape(dX, dY);
             }
             case SELECTED -> {
-                iModel.moveShape(normX, normY, dX, dY);
+                iModel.moveShape(dX, dY);
             }
             case DRAG -> {
                 if(e.getButton() == MouseButton.SECONDARY) {
@@ -112,6 +120,13 @@ public class DrawingController {
             }
         }
     }
+
+    /**
+     * Handles the mouse release event
+     * @param normX Where the mouse was released in the x-axis
+     * @param normY Where the mouse was released in the y-axis
+     * @param e The mouse event
+     */
     public void handleRelease(double normX, double normY, MouseEvent e) {
         switch (curState){
             case RESIZE -> {
@@ -134,20 +149,42 @@ public class DrawingController {
 
     }
 
-
-
-
+    /**
+     * Handles the color select and passes it off to the iModel
+     * @param color The new color selected
+     */
     public void handleColorSelect(Color color){
         iModel.setSelectedColour(color);
     }
+
+    /**
+     * Handles the tool select and passes it off to the iMOdel
+     * @param tool The new shape that has been selected
+     */
     public void handleToolSelect(InteractionModel.Tool tool){
         iModel.setCurrentTool(tool);
     }
 
+    /**
+     * When the window size has changed passes off parameters to the iModel
+     * @param width The width of the new window size
+     * @param height The height of the new window size
+     */
+    public void windowSizeChanged(double width, double height) {
+        iModel.setViewSize(width, height);
+    }
+
+    /**
+     * Sets the model
+     * @param model The model of the drawing system
+     */
     public void setModel(DrawingModel model) {
         this.model = model;
     }
-
+    /**
+     * Sets the iModel
+     * @param iModel The iModel of the drawing system
+     */
     public void setIModel(InteractionModel iModel) {
         this.iModel = iModel;
     }
