@@ -37,6 +37,7 @@ public class DrawingController {
 
         switch(curState){
             case READY -> {
+                // If a shape is at the coordinates then select the shape and set the new z coordinate and move to selected state
                 if(model.whichShape(normX, normY) != null) {
                     XShape selectedShape= model.whichShape(normX, normY);
                     model.nextZ += 1;
@@ -58,7 +59,9 @@ public class DrawingController {
                     if (model.whichShape(normX, normY) == null) {
                         iModel.unSelect();
                         curState = State.READY;
-                    } else {
+                    }
+                    // If a shape is at the coordinates then select the shape and set the new z coordinate
+                     else {
                         XShape selectedShape = model.whichShape(normX, normY);
                         selectedShape.setZ(model.nextZ);
                         model.nextZ++;
@@ -85,29 +88,19 @@ public class DrawingController {
 
         switch (curState){
             case READY -> {
+                // If there is no shape at the coordinates then add a shape
                 if (model.whichShape(normX, normY) == null) {
                     switch (iModel.getCurrentTool()) {
-                        case SQUARE -> {
-                            iModel.setSelectedShape(model.AddSquare(normX, normY, 0, iModel.getSelectedColour()));
-                        }
-                        case RECTANGLE -> {
-                            iModel.setSelectedShape(model.AddRectangle(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        }
-                        case CIRCLE -> {
-                            iModel.setSelectedShape(model.AddCircle(normX, normY, 0, iModel.getSelectedColour()));
-                        }
-                        case OVAL -> {
-                            iModel.setSelectedShape(model.AddOval(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        }
-                        case LINE -> {
-                            iModel.setSelectedShape(model.AddLine(normX, normY, 0, 0, 5/ iModel.viewWidth, iModel.getSelectedColour()));
-                        }
+                        case SQUARE -> iModel.setSelectedShape(model.AddSquare(normX, normY, 0, iModel.getSelectedColour()));
+                        case RECTANGLE -> iModel.setSelectedShape(model.AddRectangle(normX, normY, 0, 0, iModel.getSelectedColour()));
+                        case CIRCLE -> iModel.setSelectedShape(model.AddCircle(normX, normY, 0, iModel.getSelectedColour()));
+                        case OVAL -> iModel.setSelectedShape(model.AddOval(normX, normY, 0, 0, iModel.getSelectedColour()));
+                        case LINE -> iModel.setSelectedShape(model.AddLine(normX, normY, 0, 0, 5/ iModel.viewWidth, iModel.getSelectedColour()));
                     }
                     curState = State.RESIZE;
                 }
             }
             case RESIZE -> {
-
                 iModel.resizeShape(dX, dY);
             }
             case SELECTED -> {
@@ -138,12 +131,10 @@ public class DrawingController {
         }
     }
     public void handleKeyEvent(KeyEvent e){
-        switch(curState){
-            case SELECTED -> {
-                if(e.getCode() == KeyCode.DELETE){
-                    model.getShapes().remove(iModel.getSelectedShape());
-                    iModel.unSelect();
-                }
+        if (curState == State.SELECTED) {
+            if (e.getCode() == KeyCode.DELETE) {
+                model.getShapes().remove(iModel.getSelectedShape());
+                iModel.unSelect();
             }
         }
 
@@ -158,7 +149,7 @@ public class DrawingController {
     }
 
     /**
-     * Handles the tool select and passes it off to the iMOdel
+     * Handles the tool select and passes it off to the iModel
      * @param tool The new shape that has been selected
      */
     public void handleToolSelect(InteractionModel.Tool tool){

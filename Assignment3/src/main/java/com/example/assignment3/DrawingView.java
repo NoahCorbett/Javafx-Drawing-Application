@@ -9,6 +9,7 @@ import java.util.Comparator;
 
 public class DrawingView extends StackPane implements DrawingIModelSubscriber, DrawingModelSubscriber{
 
+
     Canvas myCanvas;
     GraphicsContext gc;
     DrawingModel model;
@@ -260,4 +261,5 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
             controller.windowSizeChanged(myCanvas.getWidth(), newVal.doubleValue());
         });
     }
+
 }
