@@ -3,7 +3,10 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XCircle extends XShape{
-    double cx,cy, sizeX, sizeY;
+    /** The center of the circle */
+    double cx,cy;
+    /** The size of the circle */
+    double sizeX, sizeY;
 
     /**
      * Constructor method for a circle

@@ -5,10 +5,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 public class MainUI extends StackPane  {
-    private ShapeToolbar shapeToolbar;
-    private ColorToolbar color;
-    private DrawingView view;
-    private MiniDrawingView miniView;
+
+    /** The widget for the shape toolbar */
+    private final ShapeToolbar shapeToolbar;
+    /** The widget for the color toolbar */
+    private final ColorToolbar color;
+    /** The main canvas of the system */
+    private final DrawingView view;
+    /** A smaller canvas in the corner */
+    private final MiniDrawingView miniView;
 
 
     /**

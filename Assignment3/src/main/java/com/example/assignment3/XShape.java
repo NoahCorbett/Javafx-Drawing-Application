@@ -4,7 +4,10 @@ import javafx.scene.paint.Color;
 
 
 public abstract class XShape {
-    double left, top, size;
+    /** Numbers indicating the top left of the object */
+    double left, top;
+    /** The size of the object mainly used for squares and circles */
+    double size;
 
     protected double initLeft, initTop;
     Color color;

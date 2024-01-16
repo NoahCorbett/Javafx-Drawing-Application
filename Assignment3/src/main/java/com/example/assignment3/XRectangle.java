@@ -3,6 +3,7 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XRectangle extends XShape{
+    /** The height of the rectangle */
     double sizeY;
 
     /**

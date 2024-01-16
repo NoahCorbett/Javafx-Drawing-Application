@@ -1,8 +1,6 @@
 package com.example.assignment3;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
@@ -14,17 +12,27 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, DrawingModelSubscriber{
+    /** The rectangle toggle button for the toolbar */
     ToggleButton rectangleButton;
+    /** The square toggle button for the toolbar */
     ToggleButton squareButton;
+    /** The circle toggle button for the toolbar */
     ToggleButton circleButton;
+    /** The oval toggle button for the toolbar */
     ToggleButton ovalButton;
+    /** The line toggle button for the toolbar */
     ToggleButton lineButton;
+    /** The rectangle shape that exists on the rectangle button */
     Rectangle rectangle;
+    /** The square shape that exists on the square button */
     Rectangle square;
+    /** The circle shape that exists on the circle button */
     Circle circle;
+    /** The oval shape that exists on the oval button */
     Ellipse oval;
+    /** The line shape that exists on the line button */
     Line line;
-
+    /** The interaction model of the system that the toolbar is updated when the iModel changes */
     InteractionModel IModel;
 
     /**
@@ -94,11 +102,11 @@ public class ShapeToolbar extends StackPane implements DrawingIModelSubscriber, 
         
         
         
-        root.setVgrow(rectangleButton, Priority.ALWAYS);
-        root.setVgrow(squareButton, Priority.ALWAYS);
-        root.setVgrow(circleButton, Priority.ALWAYS);
-        root.setVgrow(ovalButton, Priority.ALWAYS);
-        root.setVgrow(lineButton, Priority.ALWAYS);
+        VBox.setVgrow(rectangleButton, Priority.ALWAYS);
+        VBox.setVgrow(squareButton, Priority.ALWAYS);
+        VBox.setVgrow(circleButton, Priority.ALWAYS);
+        VBox.setVgrow(ovalButton, Priority.ALWAYS);
+        VBox.setVgrow(lineButton, Priority.ALWAYS);
 
         ToggleGroup toggleGroup = new ToggleGroup();
         rectangleButton.setToggleGroup(toggleGroup);

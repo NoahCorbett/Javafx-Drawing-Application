@@ -12,7 +12,10 @@ import java.util.ArrayList;
 
 public class ColorToolbar extends StackPane implements DrawingIModelSubscriber, DrawingModelSubscriber{
 
+    /** The toggle group for the color buttons so if 1 is selected the previous selected one is unselected */
     ToggleGroup toggleGroup;
+
+    /** The list of color buttons */
     ArrayList<ToggleButton> colorButtons;
 
     /**

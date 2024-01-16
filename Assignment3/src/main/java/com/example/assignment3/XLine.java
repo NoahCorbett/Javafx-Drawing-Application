@@ -3,7 +3,12 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XLine extends XShape{
-    double x1,y1,x2, y2, acceptableSize;
+    /** The starting point of the line */
+    double x1, y1;
+    /** The end point of the line */
+    double x2, y2;
+    /** The distance away from the line that will register it clicked */
+    double acceptableSize;
 
     /**
      * Constructor method for a line

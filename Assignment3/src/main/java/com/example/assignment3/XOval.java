@@ -3,7 +3,10 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XOval extends XShape{
-    double sizeX, sizeY, cx, cy;
+    /** The size of the oval */
+    double sizeX, sizeY;
+    /** The center of the circle */
+    double cx, cy;
 
     /**
      * Constructor method for a oval

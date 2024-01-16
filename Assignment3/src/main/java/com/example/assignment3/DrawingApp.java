@@ -11,6 +11,11 @@ import java.io.IOException;
 
 
 public class DrawingApp extends Application {
+    /**
+     * Initializes the program by setting up the MVC architecture
+     * @param stage The initial stage for the program.
+     * @throws IOException Exception required because this function overrides a parent function
+     */
     @Override
     public void start(Stage stage) throws IOException {
         MainUI view = new MainUI();
@@ -38,14 +43,10 @@ public class DrawingApp extends Application {
         controller.setIModel(interactionModel);
         controller.setModel(model);
 
-
-
-
-
         view.setMaxSize(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
         Scene scene = new Scene(view);
         scene.setOnKeyPressed(controller::handleKeyEvent);
-        stage.setTitle("Hello!");
+        stage.setTitle("JavaFX Drawing Application");
         stage.setScene(scene);
         stage.show();
     }

@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class DrawingModel {
+    /** A list of subscribers that are notified when the model has changed */
     ArrayList<DrawingModelSubscriber> subs;
+
+    /** The list of shapes created */
     ArrayList<XShape> shapes;
+
+    /** Keeps track of the next number in the z axis so new shapes/selected shapes are put to the front */
     int nextZ;
 
     /**

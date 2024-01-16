@@ -7,10 +7,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class DrawingController {
+    /** The drawing model that the controller uses to determine its actions */
     DrawingModel model;
+
+    /** The drawing interaction model that the controller uses to determine its actions */
     InteractionModel iModel;
+
+    /** The previous coordinates for the mouse */
     double prevX, prevY;
+
+    /** The current state of the controller */
     protected State curState;
+
+    /** An enumerator that signifies what state the controller is in to help it make choices */
     protected enum State{
         READY, RESIZE, SELECTED, DRAG
     }

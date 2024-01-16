@@ -3,6 +3,7 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XSquare extends XShape{
+    /** The size of the square */
     private double sizeX, sizeY;
 
     /**

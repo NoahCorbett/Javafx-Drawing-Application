@@ -5,17 +5,32 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 public class InteractionModel {
+    /** A list of subscribers that listen to the interaction model */
     ArrayList<DrawingIModelSubscriber> subs;
+
+    /** Number indicating the width and height of the view */
     double viewWidth, viewHeight;
+
+    /** The currently selected color in the iModel */
     Color selectedColour;
+
+    /** The currently selected shape object in the iModel */
     XShape selectedShape;
+
+    /** Two numbers that indicate where the top left corner of the current view window */
     double viewLeft, viewTop;
+
+    /** Two numbers that indicate the dimension of the whole document */
     double documentWidth, documentLength;
+
+    /** Boolean that keeps track if the view port is selected */
     boolean viewPortSelected;
 
+    /** Create the enum tool to keep track of what shape to create if a new shape needs creating */
     public enum Tool{
         RECTANGLE, SQUARE, OVAL, CIRCLE, LINE
     }
+    /** The currently selected shape that will be created if a new shape needs creating */
     Tool currentTool;
 
     /**
@@ -178,12 +193,12 @@ public class InteractionModel {
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XCircle circle -> {
-                double cx = circle.left + circle.size;
-                double cy = circle.top + circle.size;
+                double cx = circle.left + circle.sizeX;
+                double cy = circle.top + circle.sizeX;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XOval oval ->{
-                double cx = oval.left + oval.size;
+                double cx = oval.left + oval.sizeX;
                 double cy = oval.top + oval.sizeY;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }

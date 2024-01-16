@@ -9,12 +9,18 @@ import java.util.Comparator;
 
 public class DrawingView extends StackPane implements DrawingIModelSubscriber, DrawingModelSubscriber{
 
-
+    /** The canvas which the shapes are placed in */
     Canvas myCanvas;
+    /** A shortcut to get the graphical context from the canvas instead of calling the function everytime */
     GraphicsContext gc;
+    /** The model that the view uses to store and retrieve shapes */
     DrawingModel model;
+    /** Passes off the current state to the iModel for the controller to use */
     InteractionModel iModel;
-    double width, height, worldWidth, worldHeight;
+    /** The dimensions of the current viewport */
+    double width, height;
+    /** The size of the entire document */
+    double worldWidth, worldHeight;
 
     /**
      * Constructor method for the DrawingView
@@ -46,93 +52,79 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
             switch(item){
                 case XSquare square -> this.drawSquare(square.left * worldWidth- iModel.viewLeft,square.top * worldHeight- iModel.viewTop, square.size * Math.min(worldWidth,worldHeight) , square.color);
                 case XRectangle rectangle -> this.drawRectangle(rectangle.left * worldWidth- iModel.viewLeft, rectangle.top * worldHeight- iModel.viewTop, rectangle.size * worldWidth , rectangle.sizeY * worldHeight, rectangle.color);
-                case XCircle circle -> this.drawCircle(circle.left * worldWidth- iModel.viewLeft,circle.top * worldHeight- iModel.viewTop, circle.size * Math.min(worldWidth,worldHeight) , circle.color);
-                case XOval oval -> this.drawOval(oval.left * worldWidth- iModel.viewLeft, oval.top * worldHeight- iModel.viewTop, oval.size * worldWidth , oval.sizeY * worldHeight, oval.color);
+                case XCircle circle -> this.drawCircle(circle.left * worldWidth- iModel.viewLeft,circle.top * worldHeight- iModel.viewTop, circle.sizeX * Math.min(worldWidth,worldHeight) , circle.color);
+                case XOval oval -> this.drawOval(oval.left * worldWidth- iModel.viewLeft, oval.top * worldHeight- iModel.viewTop, oval.sizeX * worldWidth , oval.sizeY * worldHeight, oval.color);
                 case XLine line -> this.drawLine(line.x1 * worldWidth- iModel.viewLeft, line.y1 * worldHeight- iModel.viewTop, line.x2 * worldWidth- iModel.viewLeft, line.y2 * worldHeight- iModel.viewTop, 5,line.color);
                 case XShape XS -> System.out.println("An item did not get drawn");
             }
         });
         if(iModel.getSelectedShape()!= null){
-            makeBoundingBox();
+            switch (iModel.getSelectedShape()){
+                case XSquare square -> {
+                    makeBoundingBox(square.left, square.top, square.size, square.size);
+                    makeResizeTab(square.left + square.size, square.top + square.size);
+                }
+
+
+                case XRectangle rectangle -> {
+                    makeBoundingBox(rectangle.left, rectangle.top, rectangle.size, rectangle.sizeY);
+                    makeResizeTab(rectangle.left + rectangle.size, rectangle.top + rectangle.sizeY);
+                }
+
+
+                case XCircle circle -> {
+                    makeBoundingBox(circle.left, circle.top, circle.sizeX, circle.sizeX);
+
+                    makeResizeTab(circle.left + circle.sizeX, circle.top + circle.sizeX);
+                }
+
+
+                case XOval oval -> {
+                    makeBoundingBox(oval.left, oval.top, oval.sizeX, oval.sizeY);
+                    makeResizeTab(oval.left + oval.sizeX, oval.top + oval.sizeY);
+
+                }
+
+                case XLine line -> {
+                    gc.setLineWidth(2);
+                    gc.setStroke(Color.RED);
+                    gc.setLineDashes(5);
+                    gc.strokeLine(line.x1 * worldWidth- iModel.viewLeft, line.y1 * worldHeight- iModel.viewTop, line.x2 * worldWidth- iModel.viewLeft, line.y2 * worldHeight- iModel.viewTop);
+
+                    makeResizeTab(line.x2, line.y2);
+                }
+
+
+                case XShape XS -> System.out.println("An item did not get drawn");
+            }
         }
     }
 
     /**
-     * Makes a bounding box around the selected shape
+     * Makes a bounding box around the selected shape (not line)
+     * @param left The left side of the shape
+     * @param top The top of the object
+     * @param sizeX The size in the horizontal direction
+     * @param sizeY The size in the vertical direction
      */
-    private void makeBoundingBox() {
-        switch (iModel.getSelectedShape()){
-            case XSquare square -> {
-                gc.setLineWidth(2);
-                gc.setStroke(Color.RED);
-                gc.setLineDashes(5);
-                gc.strokeRect(square.left * worldWidth- iModel.viewLeft , square.top * worldHeight- iModel.viewTop, square.size * worldWidth , square.size * worldHeight);
+    private void makeBoundingBox(double left, double top, double sizeX, double sizeY) {
+        gc.setLineWidth(2);
+        gc.setStroke(Color.RED);
+        gc.setLineDashes(5);
+        gc.strokeRect(left * worldWidth- iModel.viewLeft , top * worldHeight- iModel.viewTop, sizeX * worldWidth , sizeY * worldHeight);
+    }
 
+    /**
+     * Makes a resize tab at the bottom right of the object
+     * @param right The right coordinate of the shape
+     * @param bottom The bottom coordinate of the shape
+     */
+    private void makeResizeTab (double right, double bottom) {
+        gc.setLineDashes(0);
+        gc.setFill(Color.YELLOW);
 
-                gc.setLineDashes(0);
-                gc.setFill(Color.YELLOW);
-                gc.fillOval((square.left+ square.size) * worldWidth- iModel.viewLeft-5, (square.top+ square.size)* worldHeight- iModel.viewTop-5,10, 10);
-                gc.strokeOval((square.left+ square.size) * worldWidth- iModel.viewLeft-5, (square.top+ square.size)* worldHeight- iModel.viewTop-5,10, 10);
-            }
-
-
-            case XRectangle rectangle -> {
-                gc.setLineWidth(2);
-                gc.setStroke(Color.RED);
-                gc.setLineDashes(5);
-                gc.strokeRect(rectangle.left * worldWidth- iModel.viewLeft, rectangle.top * worldHeight- iModel.viewTop, rectangle.size * worldWidth, rectangle.sizeY* worldHeight);
-
-                gc.setLineDashes(0);
-                gc.setFill(Color.YELLOW);
-                gc.fillOval((rectangle.left+ rectangle.size) * worldWidth- iModel.viewLeft-5, (rectangle.top+ rectangle.sizeY)* worldHeight- iModel.viewTop-5,10, 10);
-                gc.strokeOval((rectangle.left+ rectangle.size) * worldWidth- iModel.viewLeft-5, (rectangle.top+ rectangle.sizeY)* worldHeight- iModel.viewTop-5,10, 10);
-            }
-
-
-            case XCircle circle -> {
-                gc.setLineWidth(2);
-                gc.setStroke(Color.RED);
-                gc.setLineDashes(5);
-                gc.strokeRect(circle.left  * worldWidth- iModel.viewLeft, circle.top *worldHeight- iModel.viewTop, circle.size * worldWidth, circle.size* worldHeight);
-
-                gc.setLineDashes(0);
-                gc.setFill(Color.YELLOW);
-                gc.fillOval((circle.left+ circle.size) *  worldWidth- iModel.viewLeft-5, (circle.top+ circle.size)* worldHeight- iModel.viewTop-5,10, 10);
-                gc.strokeOval((circle.left+ circle.size) *  worldWidth- iModel.viewLeft-5, (circle.top+ circle.size)* worldHeight- iModel.viewTop-5,10, 10);
-
-            }
-
-
-            case XOval oval -> {
-                gc.setLineWidth(2);
-                gc.setStroke(Color.RED);
-                gc.setLineDashes(5);
-                gc.strokeRect(oval.left * worldWidth- iModel.viewLeft, oval.top * worldHeight- iModel.viewTop, oval.size * worldWidth, oval.sizeY* worldHeight);
-
-                gc.setLineDashes(0);
-                gc.setFill(Color.YELLOW);
-                gc.fillOval((oval.left+ oval.size) * worldWidth- iModel.viewLeft-5, (oval.top+ oval.sizeY)* worldHeight- iModel.viewTop-5,10, 10);
-                gc.strokeOval((oval.left+ oval.size) * worldWidth- iModel.viewLeft-5, (oval.top+ oval.sizeY)* worldHeight- iModel.viewTop-5,10, 10);
-
-
-            }
-
-            case XLine line -> {
-                gc.setLineWidth(2);
-                gc.setStroke(Color.RED);
-                gc.setLineDashes(5);
-                gc.strokeLine(line.x1 * worldWidth- iModel.viewLeft, line.y1 * worldHeight- iModel.viewTop, line.x2 * worldWidth- iModel.viewLeft, line.y2 * worldHeight- iModel.viewTop);
-
-                gc.setLineDashes(0);
-                gc.setFill(Color.YELLOW);
-                gc.fillOval((line.x2) * worldWidth- iModel.viewLeft-5, (line.y2)* worldHeight- iModel.viewTop-5,10, 10);
-                gc.strokeOval((line.x2) * worldWidth- iModel.viewLeft-5, (line.y2)* worldHeight- iModel.viewTop-5,10, 10);
-
-            }
-
-
-            case XShape XS -> System.out.println("An item did not get drawn");
-        }
+        gc.fillOval(right * worldWidth- iModel.viewLeft-5, bottom * worldHeight- iModel.viewTop-5,10, 10);
+        gc.strokeOval(right * worldWidth- iModel.viewLeft-5, bottom * worldHeight- iModel.viewTop-5,10, 10);
     }
 
     /**
