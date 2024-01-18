@@ -50,38 +50,36 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
         model.getShapes().sort(Comparator.comparingInt(XShape::getZ));
         model.getShapes().forEach(item ->{
             switch(item){
-                case XSquare square -> this.drawSquare(square.left * worldWidth- iModel.viewLeft,square.top * worldHeight- iModel.viewTop, square.size * Math.min(worldWidth,worldHeight) , square.color);
-                case XRectangle rectangle -> this.drawRectangle(rectangle.left * worldWidth- iModel.viewLeft, rectangle.top * worldHeight- iModel.viewTop, rectangle.size * worldWidth , rectangle.sizeY * worldHeight, rectangle.color);
-                case XCircle circle -> this.drawCircle(circle.left * worldWidth- iModel.viewLeft,circle.top * worldHeight- iModel.viewTop, circle.sizeX * Math.min(worldWidth,worldHeight) , circle.color);
-                case XOval oval -> this.drawOval(oval.left * worldWidth- iModel.viewLeft, oval.top * worldHeight- iModel.viewTop, oval.sizeX * worldWidth , oval.sizeY * worldHeight, oval.color);
-                case XLine line -> this.drawLine(line.x1 * worldWidth- iModel.viewLeft, line.y1 * worldHeight- iModel.viewTop, line.x2 * worldWidth- iModel.viewLeft, line.y2 * worldHeight- iModel.viewTop, 5,line.color);
+                case XSquare square -> this.drawSquare(square.left * worldWidth- iModel.viewLeft,square.top * worldHeight- iModel.viewTop, (square.right - square.left) * Math.min(worldWidth,worldHeight) , square.color);
+                case XRectangle rectangle -> this.drawRectangle(rectangle.left * worldWidth- iModel.viewLeft, rectangle.top * worldHeight- iModel.viewTop, rectangle.getSizeX() * worldWidth , rectangle.getSizeY() * worldHeight, rectangle.color);
+                case XCircle circle -> this.drawCircle(circle.left * worldWidth- iModel.viewLeft,circle.top * worldHeight- iModel.viewTop, circle.getSizeX() * Math.min(worldWidth,worldHeight) , circle.color);
+                case XOval oval -> this.drawOval(oval.left * worldWidth- iModel.viewLeft, oval.top * worldHeight- iModel.viewTop, oval.getSizeX() * worldWidth , oval.getSizeY() * worldHeight, oval.color);
+                case XLine line -> this.drawLine(line.left * worldWidth- iModel.viewLeft, line.top * worldHeight- iModel.viewTop, line.right * worldWidth- iModel.viewLeft, line.bottom * worldHeight- iModel.viewTop, 5,line.color);
                 case XShape XS -> System.out.println("An item did not get drawn");
             }
         });
         if(iModel.getSelectedShape()!= null){
             switch (iModel.getSelectedShape()){
                 case XSquare square -> {
-                    makeBoundingBox(square.left, square.top, square.size, square.size);
-                    makeResizeTab(square.left + square.size, square.top + square.size);
+                    makeBoundingBox(square.left, square.top, square.getSizeX(), square.getSizeX());
+                    makeResizeTab(square.right, square.bottom);
                 }
 
 
                 case XRectangle rectangle -> {
-                    makeBoundingBox(rectangle.left, rectangle.top, rectangle.size, rectangle.sizeY);
-                    makeResizeTab(rectangle.left + rectangle.size, rectangle.top + rectangle.sizeY);
+                    makeBoundingBox(rectangle.left, rectangle.top, rectangle.getSizeX(), rectangle.getSizeY());
+                    makeResizeTab(rectangle.right, rectangle.bottom);
                 }
-
-
                 case XCircle circle -> {
-                    makeBoundingBox(circle.left, circle.top, circle.sizeX, circle.sizeX);
+                    makeBoundingBox(circle.left, circle.top, circle.getSizeX(), circle.getSizeX());
 
-                    makeResizeTab(circle.left + circle.sizeX, circle.top + circle.sizeX);
+                    makeResizeTab(circle.left + circle.getSizeX(), circle.top + circle.getSizeX());
                 }
 
 
                 case XOval oval -> {
-                    makeBoundingBox(oval.left, oval.top, oval.sizeX, oval.sizeY);
-                    makeResizeTab(oval.left + oval.sizeX, oval.top + oval.sizeY);
+                    makeBoundingBox(oval.left, oval.top, oval.getSizeX(), oval.getSizeY());
+                    makeResizeTab(oval.left + oval.getSizeX(), oval.top + oval.getSizeY());
 
                 }
 
@@ -89,9 +87,9 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
                     gc.setLineWidth(2);
                     gc.setStroke(Color.RED);
                     gc.setLineDashes(5);
-                    gc.strokeLine(line.x1 * worldWidth- iModel.viewLeft, line.y1 * worldHeight- iModel.viewTop, line.x2 * worldWidth- iModel.viewLeft, line.y2 * worldHeight- iModel.viewTop);
+                    gc.strokeLine(line.left * worldWidth- iModel.viewLeft, line.top * worldHeight- iModel.viewTop, line.right * worldWidth- iModel.viewLeft, line.bottom * worldHeight- iModel.viewTop);
 
-                    makeResizeTab(line.x2, line.y2);
+                    makeResizeTab(line.right, line.bottom);
                 }
 
 
@@ -135,6 +133,7 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
      * @param color The color of the square
      */
     protected void drawSquare(double left, double top, double size,  Color color) {
+        //System.out.println(left + " " + top + " "+  size);
         gc.setFill(Color.BLACK);
         gc.fillRect(left , top, size , size);
         gc.setFill(color);
@@ -246,12 +245,8 @@ public class DrawingView extends StackPane implements DrawingIModelSubscriber, D
         myCanvas.setOnMousePressed(e -> controller.handlePress(e.getX()/worldWidth, e.getY()/worldHeight, e));
         myCanvas.setOnMouseDragged(e -> controller.handleDrag(e.getX()/worldWidth, e.getY()/worldHeight, e));
         myCanvas.setOnMouseReleased(e -> controller.handleRelease(e.getX()/worldWidth, e.getY()/worldHeight, e ));
-        this.widthProperty().addListener((observable, oldVal, newVal) -> {
-            controller.windowSizeChanged(newVal.doubleValue(), myCanvas.getHeight());
-        });
-        this.heightProperty().addListener((observable, oldVal, newVal) -> {
-            controller.windowSizeChanged(myCanvas.getWidth(), newVal.doubleValue());
-        });
+        this.widthProperty().addListener((observable, oldVal, newVal) -> controller.windowSizeChanged(newVal.doubleValue(), myCanvas.getHeight()));
+        this.heightProperty().addListener((observable, oldVal, newVal) -> controller.windowSizeChanged(myCanvas.getWidth(), newVal.doubleValue()));
     }
 
 }

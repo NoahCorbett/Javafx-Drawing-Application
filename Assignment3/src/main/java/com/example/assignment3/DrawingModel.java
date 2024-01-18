@@ -36,7 +36,7 @@ public class DrawingModel {
      * Notifies all the subscribers listening to the model
      */
     public void notifySubscribers(){
-        subs.forEach(s -> s.modelChanged());
+        subs.forEach(DrawingModelSubscriber::modelChanged);
     }
 
     /**
@@ -69,12 +69,11 @@ public class DrawingModel {
      * Return a square based on the parameters
      * @param normX The initial position of the x-axis of the square
      * @param normY The initial position of the y-axis of the square
-     * @param size How big the square is in the x-axis and y-axis of the square
      * @param color The color of the square
      * @return Return the square
      */
-    public XSquare AddSquare(double normX, double normY, double size, Color color) {
-        XSquare square =new XSquare(normX, normY, size, color, nextZ);
+    public XSquare AddSquare(double normX, double normY, Color color) {
+        XSquare square =new XSquare(normX, normY, color, nextZ);
         shapes.add(square);
         nextZ+=1;
         notifySubscribers();
@@ -84,14 +83,12 @@ public class DrawingModel {
     /**
      * Return a rectangle based on the parameters
      * @param normX The initial position of the x-axis of the rectangle
-     * @param normY The initial position of the y-axis of the rectangle
-     * @param sizeX How big the rectangle is in the x-axis and y-axis of the rectangle
-     * @param sizeY How big the rectangle is in the y-axis of the rectangle
+     * @param normY The initial position of the y-axis of the recta
      * @param color The color of the rectangle
      * @return Return the rectangle
      */
-    public XRectangle AddRectangle(double normX, double normY, double sizeX, double sizeY, Color color) {
-        XRectangle rectangle = new XRectangle(normX, normY, sizeX, sizeY, color, nextZ);
+    public XRectangle AddRectangle(double normX, double normY, Color color) {
+        XRectangle rectangle = new XRectangle(normX, normY, color, nextZ);
         shapes.add(rectangle);
         nextZ+=1;
         notifySubscribers();
@@ -102,12 +99,11 @@ public class DrawingModel {
      * Return a circle based on the parameters
      * @param normX The initial position of the x-axis of the circle
      * @param normY The initial position of the y-axis of the circle
-     * @param size How big the square is in the x-axis and y-axis of the circle
      * @param color The color of the circle
      * @return Return the circle
      */
-    public XCircle AddCircle(double normX, double normY, double size, Color color) {
-        XCircle circle = new XCircle(normX,normY, size, color, nextZ);
+    public XCircle AddCircle(double normX, double normY, Color color) {
+        XCircle circle = new XCircle(normX,normY, color, nextZ);
         shapes.add(circle);
         nextZ+=1;
         notifySubscribers();
@@ -117,13 +113,11 @@ public class DrawingModel {
      * Return an oval based on the parameters
      * @param normX The initial position of the x-axis of the oval
      * @param normY The initial position of the y-axis of the oval
-     * @param sizeX How big the oval is in the x-axis and y-axis of the oval
-     * @param sizeY How big the oval is in the y-axis of the oval
      * @param color The color of the oval
      * @return Return the oval
      */
-    public XOval AddOval(double normX, double normY, double sizeX, double sizeY, Color color) {
-        XOval oval = new XOval(normX, normY, sizeX, sizeY, color, nextZ);
+    public XOval AddOval(double normX, double normY, Color color) {
+        XOval oval = new XOval(normX, normY, color, nextZ);
         shapes.add(oval);
         nextZ+=1;
         notifySubscribers();
@@ -134,14 +128,12 @@ public class DrawingModel {
      * Return a line based on the parameters
      * @param normX The initial position of the x-axis of the line
      * @param normY The initial position of the y-axis of the line
-     * @param sizeX How big the line is in the x-axis and y-axis of the line
-     * @param sizeY How big the line is in the y-axis of the line
      * @param acceptableSize The size of the area around the line that will register that the line is clicked
      * @param color The color of the line
      * @return Return the line
      */
-    public XLine AddLine(double normX, double normY, double sizeX, double sizeY, double acceptableSize, Color color){
-        XLine line = new XLine(normX, normY, sizeX, sizeY, acceptableSize, color, nextZ);
+    public XLine AddLine(double normX, double normY, double acceptableSize, Color color){
+        XLine line = new XLine(normX, normY, acceptableSize, color, nextZ);
         shapes.add(line);
         nextZ+=1;
         notifySubscribers();

@@ -48,11 +48,11 @@ public class MiniDrawingController extends DrawingController{
                 if (model.whichShape(normX, normY) == null) {
                     // If in the ready state and there are no shapes the coordinates then add a shape
                     switch (iModel.getCurrentTool()) {
-                        case SQUARE -> iModel.setSelectedShape(model.AddSquare(normX, normY, 0, iModel.getSelectedColour()));
-                        case RECTANGLE -> iModel.setSelectedShape(model.AddRectangle(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        case CIRCLE -> iModel.setSelectedShape(model.AddCircle(normX, normY, 0, iModel.getSelectedColour()));
-                        case OVAL -> iModel.setSelectedShape(model.AddOval(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        case LINE -> iModel.setSelectedShape(model.AddLine(normX, normY, 0, 0, 5/ iModel.documentWidth, iModel.getSelectedColour()));
+                        case SQUARE -> iModel.setSelectedShape(model.AddSquare(normX, normY, iModel.getSelectedColour()));
+                        case RECTANGLE -> iModel.setSelectedShape(model.AddRectangle(normX, normY, iModel.getSelectedColour()));
+                        case CIRCLE -> iModel.setSelectedShape(model.AddCircle(normX, normY, iModel.getSelectedColour()));
+                        case OVAL -> iModel.setSelectedShape(model.AddOval(normX, normY, iModel.getSelectedColour()));
+                        case LINE -> iModel.setSelectedShape(model.AddLine(normX, normY, 5/ iModel.documentWidth, iModel.getSelectedColour()));
                     }
                     curState = State.RESIZE;
                 }

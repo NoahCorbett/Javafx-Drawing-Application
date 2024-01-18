@@ -3,43 +3,32 @@ package com.example.assignment3;
 import javafx.scene.paint.Color;
 
 public class XLine extends XShape{
-    /** The starting point of the line */
-    double x1, y1;
-    /** The end point of the line */
-    double x2, y2;
-    /** The distance away from the line that will register it clicked */
     double acceptableSize;
 
     /**
      * Constructor method for a line
      * @param left The left of the line (x1)
      * @param top The top of the line (y1)
-     * @param sizeX Size of the line in the x-axis
-     * @param sizeY Size of the line in the y-axis
      * @param acceptableSize How close to the line does a click need to be to select the line
      * @param color The color of the line
      * @param z The z position of the line
      */
-    public XLine(double left, double top, double sizeX, double sizeY, double acceptableSize, Color color, int z) {
-        super(left, top, sizeX, color, z);
-        x1 = left;
-        y1 = top;
-        x2 = left + sizeX;
-        y2 = top + sizeY;
+    public XLine(double left, double top, double acceptableSize, Color color, int z) {
+        super(left, top, color, z);
         this.acceptableSize = acceptableSize;
 
 
     }
 
     /**
-     * The change in how far (and the direction) of the line
-     * @param dx The change in the x-axis
-     * @param dy The change in the y-axis
+     * Changes the size (and the direction) of the line
+     * @param x The new x coordinate for the end of the line
+     * @param y The new y coordinate for the end of the line
      */
     @Override
-    public void resize(double dx, double dy) {
-        x2 += dx;
-        y2 += dy;
+    public void resize(double x, double y) {
+        right = x;
+        bottom = y;
 
 
     }
@@ -52,25 +41,13 @@ public class XLine extends XShape{
      */
     @Override
     public boolean contains(double x, double y) {
-        double length = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
-        double A = (y1-y2) / length;
-        double B = (x2-x1) / length;
-        double C = -1 * ((y1-y2) * x1 + (x2-x1) * y1) / length;
+        double length = Math.sqrt(Math.pow(right-left,2) + Math.pow(bottom-top,2));
+        double A = (top-bottom) / length;
+        double B = (right-left) / length;
+        double C = -1 * ((top-bottom) * left + (right-left) * top) / length;
 
 
-        return Math.abs(A*x + B*y + C) < acceptableSize && x > Math.min(x1, x2)- acceptableSize && x <Math.max(x1,x2)+acceptableSize && y > Math.min(y1, y2) -acceptableSize && y < Math.max(y1,y2) +acceptableSize;
+        return Math.abs(A*x + B*y + C) < acceptableSize && x > Math.min(left, right)- acceptableSize && x <Math.max(left,right)+acceptableSize && y > Math.min(top, bottom) -acceptableSize && y < Math.max(top,bottom) +acceptableSize;
     }
 
-    /**
-     * Move the line by dX and dY
-     * @param dX How far the line should move in the x-axis
-     * @param dY How far the line should move in the y-axis
-     */
-    @Override
-    public void translate(double dX, double dY) {
-        x1 += dX;
-        y1 += dY;
-        x2 += dX;
-        y2 += dY;
-    }
 }

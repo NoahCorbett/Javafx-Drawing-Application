@@ -1,64 +1,46 @@
 package com.example.assignment3;
-
 import javafx.scene.paint.Color;
 
+
 public class XSquare extends XShape{
-    /** The size of the square */
-    private double sizeX, sizeY;
 
     /**
      * Constructor method for a square
      * @param left The left position of the square
      * @param top The top of the square
-     * @param size The size of the square
      * @param color The colour of the square
      * @param z The z axis position of the square
      */
-    public XSquare(double left, double top, double size, Color color, int z){
-        super(left, top, size, color, z);
+    public XSquare(double left, double top, Color color, int z){
+        super(left, top, color, z);
     }
 
     /**
-     * Resize the square using the change in the x and y positions
-     * @param dx The change in the x-axis
-     * @param dy The change in the y-axis
+     * Resize the square using the change in the x and y positions of the mouse
+     *  The x coordinate of the mouse
+     *  The y coordinate of the mouse
      */
     @Override
-    public void resize(double dx, double dy) {
-        sizeX += dx;
-        sizeY += dy;
-        if (sizeX <0 && sizeY <0){
-            if(sizeX>sizeY){
-                left =sizeX + initLeft;
-                top =sizeX + initTop;
-                size = -sizeX;
-            }else{
-                left =sizeY +initLeft;
-                top =sizeY + initTop;
-                size = -sizeY;
-            }
-
-        }else if (sizeX<0){
-            if (-sizeX<sizeY){
-                left = sizeX + initLeft;
-                size = -sizeX;
-            }else{
-                left = -sizeY + initLeft;
-                size = sizeY;
-            }
-        }else if (sizeY<0){
-            if (-sizeY<sizeX){
-                top = sizeY + initTop;
-                size = -sizeY;
-            }else{
-                top = -sizeX + initTop;
-                size = sizeX;
-            }
-        }else{
-            size = Math.min(sizeX, sizeY);
+    public void resize(double x, double y) {
+        super.resize(x, y);
+        double minDim = Math.min(bottom-top,right-left);
+        if (x < initLeft) {
+            left = initLeft - minDim;
+            right = initLeft;
+        } else {
+            left = initLeft;
+            right = initLeft + minDim;
+        }
+        if (y < initTop) {
+            top = initTop - minDim;
+            bottom = initTop;
+        } else {
+            top = initTop;
+            bottom = initTop + minDim;
         }
 
     }
+
 
     /**
      * Checks if the coordinates are inside the square
@@ -69,19 +51,8 @@ public class XSquare extends XShape{
     @Override
     public boolean contains(double x, double y) {
 
-        return x >= left && x <= left + size && y >= top && y <= top + size;
+        return x >= left && x <= right && y >= top && y <= bottom;
     }
 
-    /**
-     * Moves the square by dX and dY amount
-     * @param dX How far the shape should move in the x-axis
-     * @param dY How far the shape should move in the y-axis
-     */
-    @Override
-    public void translate(double dX, double dY) {
-        initLeft +=dX;
-        initTop += dY;
-        left += dX;
-        top += dY;
-    }
+
 }

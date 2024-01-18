@@ -183,28 +183,28 @@ public class InteractionModel {
     public boolean withinResizeTab(double normX, double normY){
         switch (getSelectedShape()){
             case XSquare square -> {
-                double cx = square.left + square.size;
-                double cy = square.top + square.size;
+                double cx = square.right;
+                double cy = square.bottom;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XRectangle rectangle ->{
-                double cx = rectangle.left + rectangle.size;
-                double cy = rectangle.top + rectangle.sizeY;
+                double cx = rectangle.right;
+                double cy = rectangle.bottom;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XCircle circle -> {
-                double cx = circle.left + circle.sizeX;
-                double cy = circle.top + circle.sizeX;
+                double cx = circle.right;
+                double cy = circle.bottom;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XOval oval ->{
-                double cx = oval.left + oval.sizeX;
-                double cy = oval.top + oval.sizeY;
+                double cx = oval.right;
+                double cy = oval.bottom;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XLine line ->{
-                double cx = line.x2;
-                double cy = line.y2;
+                double cx = line.right;
+                double cy = line.bottom;
                 return Math.hypot(((normX - cx) *viewWidth) ,((normY - cy) *viewWidth)) <= 1;
             }
             case XShape xShape->{
@@ -226,7 +226,7 @@ public class InteractionModel {
      * Notifies subscriber when the interaction model has changed
      */
     public void notifySubscribers(){
-        subs.forEach(s -> s.iModelChanged());
+        subs.forEach(DrawingIModelSubscriber::iModelChanged);
     }
 
 }

@@ -4,49 +4,44 @@ import javafx.scene.paint.Color;
 
 
 public abstract class XShape {
-    /** Numbers indicating the top left of the object */
-    double left, top;
-    /** The size of the object mainly used for squares and circles */
-    double size;
+    /** Numbers indicating the location and size of the object */
+    double left, top, right, bottom;
+
 
     protected double initLeft, initTop;
     Color color;
     int z;
 
-    /**
-     * Constructor method with no parameters
-     */
-    public XShape() {
-        left = 0;
-        top = 0;
-        size = 0;
-        color = Color.BLACK;
-    }
 
     /**
      * Constructor method that sets shape parameters
-     * @param newLeft The left position of the shape
-     * @param newTop The top of the shape
-     * @param newSize The size of the shape
+     * @param x The left position of the shape
+     * @param y The top of the shape
      * @param newColor The colour of the shape
      * @param z The z axis position
      */
-    public XShape(double newLeft, double newTop, double newSize, Color newColor, int z) {
-        initLeft = newLeft;
-        initTop = newTop;
-        left = newLeft;
-        top = newTop;
-        size = newSize;
+    public XShape(double x, double y, Color newColor, int z) {
+        initLeft = x;
+        initTop = y;
+        left = x;
+        top = y;
+        right = x;
+        bottom = y;
         color = newColor;
         this.z = z;
     }
 
     /**
-     * Resize the shape using the change in the x and y positions
-     * @param dx The change in the x-axis
-     * @param dy The change in the y-axis
+     * Resize the shape using the new x coordinate of the mouse
+     * @param x The x coordinate of the mouse
+     * @param y The y coordinate of the mouse
      */
-    public abstract void resize(double dx, double dy);
+    public void resize(double x, double y){
+        left = Math.min(x, initLeft);
+        right = Math.max(x, initLeft);
+        top = Math.min(y, initTop);
+        bottom = Math.max(y, initTop);
+    }
 
     /**
      * Checks if the coordinates are inside the shape
@@ -77,5 +72,20 @@ public abstract class XShape {
      * @param dX How far the shape should move in the x-axis
      * @param dY How far the shape should move in the y-axis
      */
-    public abstract void translate(double dX, double dY);
+    public void translate(double dX, double dY) {
+        initLeft +=dX;
+        left += dX;
+        right += dX;
+        initTop += dY;
+        top += dY;
+        bottom += dY;
+    }
+
+    public double getSizeX() {
+        return this.right - this.left;
+    }
+
+    public double getSizeY() {
+        return this.bottom - this.top;
+    }
 }

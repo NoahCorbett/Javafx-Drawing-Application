@@ -37,7 +37,7 @@ public class MainUI extends StackPane  {
 
         view = new DrawingView(500, 500, 2000, 2000);
         view.setMinSize(200,200);
-        view.setMaxSize(2000,2000);
+        view.setMaxSize(500,500);
         view.setMaxSize(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 
 

@@ -100,21 +100,17 @@ public class DrawingController {
                 // If there is no shape at the coordinates then add a shape
                 if (model.whichShape(normX, normY) == null) {
                     switch (iModel.getCurrentTool()) {
-                        case SQUARE -> iModel.setSelectedShape(model.AddSquare(normX, normY, 0, iModel.getSelectedColour()));
-                        case RECTANGLE -> iModel.setSelectedShape(model.AddRectangle(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        case CIRCLE -> iModel.setSelectedShape(model.AddCircle(normX, normY, 0, iModel.getSelectedColour()));
-                        case OVAL -> iModel.setSelectedShape(model.AddOval(normX, normY, 0, 0, iModel.getSelectedColour()));
-                        case LINE -> iModel.setSelectedShape(model.AddLine(normX, normY, 0, 0, 5/ iModel.viewWidth, iModel.getSelectedColour()));
+                        case SQUARE -> iModel.setSelectedShape(model.AddSquare(normX, normY, iModel.getSelectedColour()));
+                        case RECTANGLE -> iModel.setSelectedShape(model.AddRectangle(normX, normY, iModel.getSelectedColour()));
+                        case CIRCLE -> iModel.setSelectedShape(model.AddCircle(normX, normY, iModel.getSelectedColour()));
+                        case OVAL -> iModel.setSelectedShape(model.AddOval(normX, normY, iModel.getSelectedColour()));
+                        case LINE -> iModel.setSelectedShape(model.AddLine(normX, normY, 5/ iModel.viewWidth, iModel.getSelectedColour()));
                     }
                     curState = State.RESIZE;
                 }
             }
-            case RESIZE -> {
-                iModel.resizeShape(dX, dY);
-            }
-            case SELECTED -> {
-                iModel.moveShape(dX, dY);
-            }
+            case RESIZE -> iModel.resizeShape(normX + iModel.viewLeft, normY + iModel.viewTop);
+            case SELECTED -> iModel.moveShape(dX, dY);
             case DRAG -> {
                 if(e.getButton() == MouseButton.SECONDARY) {
                     iModel.setViewLocation(iModel.viewLeft - dX * iModel.viewWidth, iModel.viewTop - dY * iModel.viewHeight);
@@ -131,12 +127,8 @@ public class DrawingController {
      */
     public void handleRelease(double normX, double normY, MouseEvent e) {
         switch (curState){
-            case RESIZE -> {
-                curState = State.SELECTED;
-            }
-            case DRAG -> {
-                curState = State.READY;
-            }
+            case RESIZE -> curState = State.SELECTED;
+            case DRAG -> curState = State.READY;
         }
     }
     public void handleKeyEvent(KeyEvent e){

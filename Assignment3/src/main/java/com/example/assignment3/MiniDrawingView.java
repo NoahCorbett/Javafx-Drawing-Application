@@ -28,11 +28,11 @@ public class MiniDrawingView extends DrawingView{
         model.getShapes().sort(Comparator.comparingInt(XShape::getZ));
         model.getShapes().forEach(item ->{
             switch(item){
-                case XSquare square -> super.drawSquare(square.left * width , square.top * height, square.size * Math.min(width, height), square.color);
-                case XRectangle rectangle -> super.drawRectangle(rectangle.left * width , rectangle.top * height, rectangle.size * width, rectangle.sizeY *height, rectangle.color);
-                case XCircle circle -> super.drawCircle(circle.left * width , circle.top * height, circle.sizeX * Math.min(width, height), circle.color);
-                case XOval oval -> super.drawOval(oval.left * width , oval.top * height, oval.sizeX * width, oval.sizeY *height, oval.color);
-                case XLine line -> super.drawLine(line.x1 * width, line.y1 * height, line.x2 * width, line.y2 *height, 3, line.color);
+                case XSquare square -> super.drawSquare(square.left * width , square.top * height, square.getSizeX() * Math.min(width, height), square.color);
+                case XRectangle rectangle -> super.drawRectangle(rectangle.left * width , rectangle.top * height, rectangle.getSizeX() * width, rectangle.getSizeY() *height, rectangle.color);
+                case XCircle circle -> super.drawCircle(circle.left * width , circle.top * height, circle.getSizeX() * Math.min(width, height), circle.color);
+                case XOval oval -> super.drawOval(oval.left * width , oval.top * height, oval.getSizeX() * width, oval.getSizeY() *height, oval.color);
+                case XLine line -> super.drawLine(line.left * width, line.top * height, line.right * width, line.bottom *height, 3, line.color);
                 case XShape XS -> System.out.println("An item did not get drawn");
             }
         });
@@ -73,29 +73,29 @@ public class MiniDrawingView extends DrawingView{
                 gc.setLineWidth(1);
                 gc.setStroke(Color.RED);
 
-                gc.strokeRect(square.left * width, square.top * height, square.size * width, square.size * height);
+                gc.strokeRect(square.left * width, square.top * height, square.getSizeX() * width, square.getSizeY() * height);
             }
             case XRectangle rectangle -> {
                 gc.setLineWidth(1);
                 gc.setStroke(Color.RED);
-                gc.strokeRect(rectangle.left * width, rectangle.top * height, rectangle.size * width, rectangle.sizeY* height);
+                gc.strokeRect(rectangle.left * width, rectangle.top * height, rectangle.getSizeX() * width, rectangle.getSizeY()* height);
             }
             case XCircle circle -> {
                 gc.setLineWidth(1);
                 gc.setStroke(Color.RED);
-                gc.strokeRect(circle.left * width, circle.top * height, circle.sizeX * width, circle.sizeX * height);
+                gc.strokeRect(circle.left * width, circle.top * height, circle.getSizeX() * width, circle.getSizeY() * height);
 
             }
             case XOval oval -> {
                 gc.setLineWidth(1);
                 gc.setStroke(Color.RED);
-                gc.strokeRect(oval.left * width, oval.top * height, oval.sizeX * width, oval.sizeY* height);
+                gc.strokeRect(oval.left * width, oval.top * height, oval.getSizeX() * width, oval.getSizeY()* height);
 
             }
             case XLine line -> {
                 gc.setLineWidth(1);
                 gc.setStroke(Color.RED);
-                gc.strokeLine(line.x1 * width, line.y1 * height, line.x2 * width, line.y2* height);
+                gc.strokeLine(line.left * width, line.top * height, line.right * width, line.bottom* height);
 
             }
             case XShape XS -> System.out.println("An item did not get drawn");
