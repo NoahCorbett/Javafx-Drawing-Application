@@ -59,7 +59,7 @@ public class MiniDrawingController extends DrawingController{
             }
             case RESIZE ->
                     // If in the resize state then resize the shape
-                    iModel.resizeShape(dX, dY);
+                    iModel.resizeShape(normX, normY);
 
             case SELECTED -> {
                 // If the viewport is selected then move the viewport else move the shape

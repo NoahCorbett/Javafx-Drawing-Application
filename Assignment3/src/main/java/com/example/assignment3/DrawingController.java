@@ -109,7 +109,7 @@ public class DrawingController {
                     curState = State.RESIZE;
                 }
             }
-            case RESIZE -> iModel.resizeShape(normX + iModel.viewLeft, normY + iModel.viewTop);
+            case RESIZE -> iModel.resizeShape(normX , normY);
             case SELECTED -> iModel.moveShape(dX, dY);
             case DRAG -> {
                 if(e.getButton() == MouseButton.SECONDARY) {
